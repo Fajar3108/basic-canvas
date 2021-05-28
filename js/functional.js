@@ -53,7 +53,7 @@ const  idle = (index) => {
 }
 
 window.onload = () => {
-    character.src = `${charPath}/indle/Idle__00${index}.png`;
+    character.src = `${charPath}/idle/Idle__00${index}.png`;
     drawImage(bgData);
     drawImage(charData);
 
