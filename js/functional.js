@@ -5,7 +5,6 @@ let character = new Image();
 let index = 0;
 
 const charPath = "/sprites/cowboy";
-character.src = `${charPath}/run/Run__00${index}.png`;
 
 //  Set Canvas Size
 const fullwidth = document.body.clientWidth;
@@ -35,7 +34,7 @@ const drawImage = ({image, x, y, width, height}) => {
     context.drawImage(image, x, y, width, height);
 }
 
-const move = (speed, d) => {
+const run = (speed, d) => {
     let batas = 0;
     setInterval(() => {
         if (batas > speed) return;
@@ -47,14 +46,38 @@ const move = (speed, d) => {
     }, 1)
 }
 
+const  idle = (index) => {
+    character.src = `${charPath}/idle/idle__00${index}.png`;
+    drawImage(bgData);
+    drawImage(charData);
+}
+
 window.onload = () => {
-    character.src = `${charPath}/run/Run__00${index}.png`;
+    character.src = `${charPath}/indle/Idle__00${index}.png`;
     drawImage(bgData);
     drawImage(charData);
 
     const speed = 20;
 
+    let isRunning = false;
+
+    setInterval(() => {
+        if (isRunning) return;
+        charData.width = 319 / 2;
+        charData.height = 486 / 2;
+        index++;
+
+        if (index >= 9) {
+            index = 0;
+        }
+
+        idle(index);
+    }, 100);
+
     window.addEventListener('keydown', (e) => {
+        charData.width = 415 / 2.2,
+        charData.height = 507 / 2.2,
+        isRunning = true;
         if (e.code === "ArrowRight") {
             index++;
 
@@ -64,7 +87,7 @@ window.onload = () => {
 
             character.src = `${charPath}/run/Run__00${index}.png`;
             if (charData.x > canvas.width - 400) return;
-            move(speed, 1);
+            run(speed, 1);
         } 
 
         if (e.code === "ArrowLeft") {
@@ -76,7 +99,11 @@ window.onload = () => {
 
             character.src = `${charPath}/run/Run__00${index}.png`;
             if (charData.x < 150) return;
-            move(speed, -1);
+            run(speed, -1);
         }
+    });
+
+    window.addEventListener("keyup", () => {
+        isRunning = false;
     })
 }
